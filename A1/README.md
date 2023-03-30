@@ -1,1 +1,1 @@
-# EITN95
+# Assignment 1
