@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-f = open("task2_BPrio_exp.m", "r")
+f = open("images/task2_BPrio_exp.m", "r")
 xs, ys = [], []
 
 for line in f:
@@ -11,4 +11,4 @@ for line in f:
 plt.plot(xs, ys)
 plt.ylabel("Nbr of A + Nbr of B")
 plt.xlabel("Time")
-plt.savefig("task2_BPrio_exp.png")
+plt.savefig("images/task2_BPrio_exp.png")

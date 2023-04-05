@@ -56,8 +56,8 @@ class State extends GlobalSimulation {
 
 	private void a_depart() {
 		nbrA--;
-		insertEvent(B_ARRIVAL, time + Math.abs(d * Math.log(1 - slump.nextDouble())));
-		//insertEvent(B_ARRIVAL, time + d);
+		//insertEvent(B_ARRIVAL, time + Math.abs(d * Math.log(1 - slump.nextDouble())));
+		insertEvent(B_ARRIVAL, time + d);
 		nextAPrio();
 	}
 
