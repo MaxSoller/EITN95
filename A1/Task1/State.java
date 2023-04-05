@@ -9,10 +9,10 @@ class State extends GlobalSimulation{
 
 	Random slump = new Random(); // This is just a random number generator
 	private double randExpNumber(double mean){
-		return (-mean * Math.log(slump.nextDouble()));
+		return Math.abs(mean * Math.log(1 - slump.nextDouble()));
 	}
 	
-	
+	private int arrivalTimeQ1 = 1;
 	// The following method is called by the main program each time a new event has been fetched
 	// from the event list in the main loop. 
 	public void treatEvent(Event x){
@@ -46,7 +46,7 @@ class State extends GlobalSimulation{
 		}
 
 		
-		insertEvent(ARRIVAL_FIRST_QUEUE, time + 1);
+		insertEvent(ARRIVAL_FIRST_QUEUE, time + arrivalTimeQ1);
 
 		if (numberInQueue1 < 10){
 			numberInQueue1++;
@@ -63,12 +63,14 @@ class State extends GlobalSimulation{
 		}
 		numberInQueue2++;
 	}
+
 	private void readyQueue1(){
 		numberInQueue1--;
 		insertEvent(ARRIVAL_SECOND_QUEUE, time);
 		if (numberInQueue1 > 0)
 			insertEvent(READY_FIRST_QUEUE, time + randExpNumber(2.1));
 	}
+
 	private void readyQueue2(){
 		numberInQueue2--;
 		if(numberInQueue2 > 0){
