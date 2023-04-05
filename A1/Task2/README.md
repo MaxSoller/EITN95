@@ -1,20 +1,17 @@
 ## Task 2
 
-1. The mean number of jobs in the buffer is 130.6.
+1. 130.6.
 
-2. Now the mean number is 6.4
+2. 6.4
 
-3. Mean number of jobs in the buffer when jobs of type A has priority is 4.8
+3. 4.8
 
-4. 
-Scenario 1:
+4.
 
-![Scenario 1](images/task2_BPrio_const.png)
+- In the first scenario, when a queue of A-jobs forms, we know for certain that in 1 second the same exact queue will form but with B-jobs instead. Since they take 0.02s longer, it's inevitably that there will be delay.
 
-Scenario 2:
+- In the second scenario, the delay distribution is exponential instead of constant, which means the risk for delay because of new B-jobs is lesser. Compare this to the first scanrio where it is certain.
 
-![Scenario 2](images/task2_BPrio_exp.png)
+- In the third scenario we let A-jobs have higher priority but still have a constant delay distribution. But by letting A-jobs be served first we can lower the delay by serving the jobs which takes the least time, that is the A-jobs.
 
-Scenario 3:
-
-![Scenario 3](images/task2_APrio_const.png)
+![Task 2](images/task2.png)

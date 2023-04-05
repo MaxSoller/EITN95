@@ -1,14 +1,23 @@
 import matplotlib.pyplot as plt
 
-f = open("images/task2_BPrio_exp.m", "r")
-xs, ys = [], []
+first = open("images/task2_BPrio_const.m", "r")
+second = open("images/task2_BPrio_exp.m", "r")
+third = open("images/task2_APrio_const.m", "r")
 
-for line in f:
-    y, x = line.split(" ")
-    xs.append(float(x))
-    ys.append(float(y))
+files = [first, second, third]
+labels = ["Constant delay", "Exponential delay", "A-jobs Priority"]
 
-plt.plot(xs, ys)
+for i in range(3):
+    xs, ys = [], []
+
+    for line in files[i]:
+        y, x = line.split(" ")
+        xs.append(float(x))
+        ys.append(float(y))
+
+    plt.plot(xs, ys, label=labels[i])
+
 plt.ylabel("Nbr of A + Nbr of B")
 plt.xlabel("Time")
-plt.savefig("images/task2_BPrio_exp.png")
+leg = plt.legend(loc='upper right')
+plt.savefig("images/task2.png")
