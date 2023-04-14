@@ -20,7 +20,7 @@ class Gen extends Proc{
 		switch (x.signalType){
 			case READY:{
 				SignalList.SendSignal(ARRIVAL, sendTo, time);
-				SignalList.SendSignal(READY, this, time + Math.abs(lambda * Math.log(1-slump.nextDouble())));
+				// (Uniform distribution) SignalList.SendSignal(READY, this, time + slump.uniform(0.0, 0.11));
 			}
 				break;
 		}

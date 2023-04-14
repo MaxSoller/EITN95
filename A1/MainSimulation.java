@@ -64,13 +64,13 @@ public class MainSimulation extends Global{
     	
     	//prints results
     	
-    	System.out.println("Time: " + time);
-    	System.out.println("Mean number of customers in Q1: " + 1.0*Q1.accumulated/Q1.noMeasurements);
-    	System.out.println("Mean number of customers in Q2: " + 1.0*Q2.accumulated/Q2.noMeasurements);
-    	System.out.println("Total number of customers in queuing system: " + 1.0*(Q1.accumulated+Q2.accumulated));
-    	System.out.println("total in Q2: " + Q2.accumulated);
-    	System.out.println("total in Q1: " + Q1.accumulated);
-    	System.out.println("Mean waiting time in system: " + time/(Q1.accumulated+Q2.accumulated));
+    	//System.out.println("Time: " + time);
+    	//System.out.println("Mean number of customers in Q1: " + 1.0*Q1.accumulated/Q1.noMeasurements);
+    	//System.out.println("Mean number of customers in Q2: " + 1.0*Q2.accumulated/Q2.noMeasurements);
+    	//System.out.println("Total number of customers in queuing system: " + 1.0*(Q1.accumulated+Q2.accumulated));
+    	//System.out.println("total in Q2: " + Q2.accumulated);
+    	//System.out.println("total in Q1: " + Q1.accumulated);
+    	//System.out.println("Mean waiting time in system: " + time/(Q1.accumulated+Q2.accumulated));
     	
 
 

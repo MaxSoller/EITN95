@@ -14,7 +14,7 @@ class QS extends Proc{
 			case ARRIVAL:{
 				numberInQueue++;
 				if (numberInQueue == 1){
-					SignalList.SendSignal(READY,this, time + Math.abs(4 * Math.log(1 - slump.nextDouble()))); //service time with
+					SignalList.SendSignal(READY,this, time + Math.abs(0.5 * Math.log(1 - slump.nextDouble()))); //service time with
 				}
 			} break;
 
@@ -24,14 +24,14 @@ class QS extends Proc{
 					SignalList.SendSignal(ARRIVAL, sendTo, time);
 				}
 				if (numberInQueue > 0){
-					SignalList.SendSignal(READY, this, time + Math.abs(4 * Math.log(1 - slump.nextDouble()))); //time + 0.2*slump.nextDouble()
+					SignalList.SendSignal(READY, this, time + Math.abs(0.5 * Math.log(1 - slump.nextDouble()))); //time + 0.2*slump.nextDouble()
 				}
 			} break;
 
 			case MEASURE:{
 				noMeasurements++;
 				accumulated = accumulated + numberInQueue;
-				SignalList.SendSignal(MEASURE, this, time + Math.abs(4 * Math.log(1 - slump.nextDouble())));
+				SignalList.SendSignal(MEASURE, this, time + Math.abs(0.5 * Math.log(1 - slump.nextDouble())));
 			} break;
 		}
 	}
