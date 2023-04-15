@@ -48,11 +48,11 @@ class State extends GlobalSimulation{
 		
 		insertEvent(ARRIVAL_FIRST_QUEUE, time + arrivalTimeQ1);
 
-		if (numberInQueue1 < 10){
+		if (numberInQueue1 > 10){
+			nbrOfDropped++;
+		}else{
 			numberInQueue1++;
 			nbrOfAccepted++;
-		}else{
-			nbrOfDropped++;
 		}
 
 	}

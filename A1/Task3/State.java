@@ -13,7 +13,7 @@ class State extends GlobalSimulation{
 		return Math.abs(mean * Math.log(1 - slump.nextDouble()));
 	}
 
-	private int meanArrivalTimeQ1 = 2;
+	private double meanArrivalTimeQ1 = 2;
 
 	
 	
@@ -59,7 +59,7 @@ class State extends GlobalSimulation{
 	
 	private void arrivalQueue2(){
 		if(numberInQueue2 == 0){
-			insertEvent(READY_SECOND_QUEUE, time + 1);
+			insertEvent(READY_SECOND_QUEUE, time + randExpNumber(1));
 		}
 		numberInQueue2++;
 	}
