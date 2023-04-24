@@ -11,7 +11,9 @@ class State extends GlobalSimulation {
 	public int noMeasurements = 0;
 
 	Random slump = new Random(); // This is just a random number generator
-	SimpleFileWriter W = new SimpleFileWriter("task2_BPrio_exp.m", false);
+	SimpleFileWriter W = new SimpleFileWriter("task2_APrio_const.m", false);
+	
+
 	
 	public int lambda = 150;
 	public double xa = 0.002;
@@ -41,11 +43,15 @@ class State extends GlobalSimulation {
 		}
 	}
 
+	private double expDistribution(double mean) {
+		return - mean * Math.log(1-slump.nextDouble());
+	}
+
 	private void a_arrival() {
 		if (nbrA + nbrB == 0)
 			insertEvent(A_DEPART, time + xa);
 		nbrA++;
-		insertEvent(A_ARRIVAL, time -(Math.log(slump.nextDouble()) / lambda));
+		insertEvent(A_ARRIVAL, time + expDistribution(1.0/lambda));
 	}
 
 	private void b_arrival() {
@@ -56,14 +62,14 @@ class State extends GlobalSimulation {
 
 	private void a_depart() {
 		nbrA--;
-		//insertEvent(B_ARRIVAL, time + Math.abs(d * Math.log(1 - slump.nextDouble())));
-		insertEvent(B_ARRIVAL, time + d);
-		nextAPrio();
+		insertEvent(B_ARRIVAL, time + expDistribution(1.0));
+		//insertEvent(B_ARRIVAL, time + d);
+		nextBPrio();
 	}
 
 	private void b_depart() {
 		nbrB--;
-		nextAPrio();
+		nextBPrio();
 	}
 
 	private void nextAPrio() {
