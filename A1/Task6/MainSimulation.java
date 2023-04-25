@@ -10,19 +10,14 @@ public class MainSimulation extends GlobalSimulation {
 		Random slump = new Random();
 
 		int count = 0;
-		int runs = 1000;
+		int runs = 10000;
 		double totalTime = 0;
 		boolean done = false;
 		
 		// The main simulation loop
 		while (count < runs) {
 
-			// Inserting event at random TimeOfEvent between 1 and 5
-			insertEvent(MACHINE1, (1+4*slump.nextDouble())); 
-			insertEvent(MACHINE2, (1+4*slump.nextDouble()));
-			insertEvent(MACHINE3, (1+4*slump.nextDouble()));
-			insertEvent(MACHINE4, (1+4*slump.nextDouble()));
-			insertEvent(MACHINE5, (1+4*slump.nextDouble()));  
+			insertEvent(ARRIVAL, 0);
 
 			while(!done) {
 				actEvent = eventList.fetchEvent();
