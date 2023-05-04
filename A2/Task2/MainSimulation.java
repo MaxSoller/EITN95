@@ -6,71 +6,62 @@ import java.text.DecimalFormat;
 public class MainSimulation extends GlobalSimulation{
  
     public static void main(String[] args) throws IOException {
-		List<Double> queueTimess = new ArrayList<>();
+		List<Double> averageQueueTimess = new ArrayList<>();
 		List<Double> endTimes = new ArrayList<>();
+		int startingTime = 9*60;
+		int endingTime = 17*60;
 
-		int amountOfDays = 1000;
-		int amountOfCustomer = 0; 
-
+		int amountOfDays = 10000;
+		
 		for(int i = 0; i < amountOfDays; i++){
 			Event actEvent;
 			State actState = new State(); // The state that shoud be used
 			// Some events must be put in the event list at the beginning
 
 
-			insertEvent(ARRIVAL, 0);
-			
+			insertEvent(ARRIVAL, startingTime);
+			time = startingTime;
 			// The main simulation loop
 			do {
 				actEvent = eventList.fetchEvent();
 				time = actEvent.eventTime;
+
 				actState.treatEvent(actEvent);
-				if(time > (17-9)*60 ){
+				if(time > endingTime ){
 					if(actState.numberInQueue == 0){
-						endTimes.add(time);
-						time = 0;
+						endTimes.add(time/60);
+						time = startingTime;
 						break;
 					}
 				}
 			}while(true);
 
-			amountOfCustomer = amountOfCustomer + actState.noOfServed;
-			queueTimess.addAll(actState.queueTimes);
+			averageQueueTimess.add(averageDouble(actState.queueTimes));
 		}
 
+		double confidenceQ = averageDouble(averageQueueTimess)/Math.sqrt(amountOfDays);
+		double confidenceE = averageDouble(endTimes)/Math.sqrt(amountOfDays);
 
+		printResults(averageDouble(averageQueueTimess), confidenceQ, "queue times");
+		printResults(averageDouble(endTimes), confidenceE, "end times");
 
-		double timeAverage = averageDouble(queueTimess);
-		double endTimeAverage = averageDouble(endTimes);
-
-		double standardDeviation = standardDev(queueTimess);
-		System.out.println(timeAverage);
-		double low = timeAverage - 1.96*standardDeviation;
-		double high = timeAverage + 1.96*standardDeviation;
-		System.out.println("Average time of a prescription fill: (95% confidence interval) (Low) " + low + " - (High) " + high);
 		
-		double standardDevationEndTime = standardDev(endTimes);
-		System.out.println(endTimeAverage);
-		double lowEndTime = endTimeAverage - 1.96*standardDevationEndTime;
-		double highEndTime = endTimeAverage + 1.96*standardDevationEndTime;
-
-		System.out.println("Average end time of day: (95% confidence interval) (Low) " +  (lowEndTime) + " - (High) " + (highEndTime));
 
 
 	}
+	public static void printResults(double average ,double confidence, String what){
+		System.out.println("------------------------------------------");
+		System.out.println("The 95% interval for " + what + " is " + average + " \u00B1 " + 1.96*confidence);
+	}
 	public static Double standardDev(List<Double> values) {
-		double sum = 0;
-		for(double i : values){
-			sum = sum + i;
-		}
-		int size = values.size();
-		double average = sum/size;
+		double average = averageDouble(values);
 
 		double variance = 0.0;
 		for(double num : values){
 			variance = variance + (Math.pow(num-average,2));
 		}
-		return Math.sqrt(variance/size);
+		variance = variance/values.size();
+		return Math.sqrt(variance);
 	}
 
 	public static Double averageDouble(List<Double> values){
@@ -78,7 +69,6 @@ public class MainSimulation extends GlobalSimulation{
 		for(double i : values){
 			sum = sum + i;
 		}
-		
 		return sum/values.size();
 	}
 }
