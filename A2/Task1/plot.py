@@ -1,13 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def confidenceInterval(xs, filename):
-    N = len(xs)
-    mean = np.mean(xs)
-    var = np.sum((xs - mean)**2) / N
+def confidenceInterval(customers, filename):
+    N = len(customers)
+    mean = np.mean(customers)
+    var = np.sum((customers - mean)**2) / N
     std = np.sqrt(var)
-
     confidence_interval = 1.96 * (std / np.sqrt(N))
+
+    print("Mean:", mean, "var:", var, "std:", std)
     print("Confidence interval for ", filename, ": ", confidence_interval)
 
 
@@ -30,6 +31,6 @@ plt.ylabel("Customers")
 plt.xlabel("Time")
 plt.savefig(filename + ".png")
 
-confidenceInterval(xs, filename)
+confidenceInterval(ys, filename)
 
 
