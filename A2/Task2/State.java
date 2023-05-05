@@ -6,22 +6,15 @@ class State extends GlobalSimulation{
 	// Here follows the state variables and other variables that might be needed
 	// e.g. for measurements
 	public int numberInQueue = 0, noOfServed = 0;
+	private double lambda = 15.0; //4 per hour means lambda = 15
+	private int finishingTime = 17*60; 
 	
 	Random slump = new Random(); // This is just a random number generator
 	LinkedList<Double> times = new LinkedList<Double>();
 	List<Double> queueTimes  = new ArrayList<>();
 
-	private double poissonRandom(double mean){
-		Random r = new Random();
-		double L = Math.exp(-mean);
-		int k = 0;
-		double p = 1.0;
-		do {
-			p = p * r.nextDouble();
-			k++;
-		} while (p > L);
-		return k - 1;
-
+	public double poisson_dist(double dist) {
+		return Math.log(1 - slump.nextDouble()) / (-(1 / dist));
 	}
 	
 	// The following method is called by the main program each time a new event has been fetched
@@ -43,13 +36,13 @@ class State extends GlobalSimulation{
 	// things are getting more complicated than this.
 	
 	private void arrival(){
-		if (numberInQueue == 0 && time <= (17-9)*60){
+		if (numberInQueue == 0 && time <= finishingTime){
 			insertEvent(READY, time + (slump.nextDouble()*10 + 10));
 		}
-		if(time <= (17-9)*60){
+		if(time <= 	finishingTime){
 			numberInQueue++;
 
-			double nextTime = time + poissonRandom(15);
+			double nextTime = time + poisson_dist(lambda);
 			insertEvent(ARRIVAL, nextTime);
 			times.addLast(time);
 		}
