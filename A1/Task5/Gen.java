@@ -43,6 +43,9 @@ class Gen extends Proc{
 	public QS roundRobin(LinkedList<QS> queues){
 		QS tmp = queues.get(counter);
 		counter += 1;
+		if(counter ==5){
+			counter = 0;
+		}
 		return tmp;
 	}
 	public QS shortestQueue(LinkedList<QS> queues){

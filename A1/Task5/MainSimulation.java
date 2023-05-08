@@ -28,7 +28,7 @@ public class MainSimulation extends Global{
 		}
 
     	Gen Generator = new Gen();
-    	Generator.lambda = 9; //Generator ska generera nio kunder per sekund  //Generator shall generate 9 customers per second
+    	Generator.lambda = 1/0.11; //Generator ska generera nio kunder per sekund  //Generator shall generate 9 customers per second
     	Generator.sendTo = queues; //De genererade kunderna ska skickas till k�systemet QS  // The generated customers shall be sent to Q1
 
 

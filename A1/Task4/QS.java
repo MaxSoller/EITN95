@@ -7,7 +7,7 @@ class QS extends Proc{
 	public int numberInQueue = 0, noOfPrio = 0, noOfNormal = 0, prioArrival = 0, normalArrival = 0, prio = 0, normal = 0;
 	public double accumulatedPrioTime = 0.0, accumulatedTime = 0.0;
 	public Proc sendTo;
-	private double chanceForPrio = 0.5; 
+	private double chanceForPrio = 0.1; 
 	Random slump = new Random();
 	public LinkedList<Double> priorityTimes = new LinkedList<>();
 	public LinkedList<Double> times = new LinkedList<>();
