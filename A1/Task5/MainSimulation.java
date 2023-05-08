@@ -51,7 +51,7 @@ public class MainSimulation extends Global{
     	//Slutligen skrivs resultatet av simuleringen ut nedan:
     	//Finally the result of the simulation is printed below:
 		for(int i = 0; i < 5; i++){
-			System.out.println("Mean number of customers in queuing system number : " + i + ":" + 1.0*queues.get(i).accumulated/queues.get(i).noMeasurements);
+			System.out.println("Mean number of customers in queuing system number : " + i + ":" + 1.0*Generator.accumulatedInQueues.get(i)/Generator.noMeasurements);
 
 		}
 

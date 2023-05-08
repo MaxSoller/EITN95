@@ -10,6 +10,9 @@ class Gen extends Proc{
 	//The random number generator is started:
 	Random slump = new Random();
 	private int counter = 0;
+	public List<Integer> accumulatedInQueues = new ArrayList<>(Arrays.asList(0,0,0,0,0));
+	
+	public int noMeasurements = 0;
 	//Generatorn har tv� parametrar:
 	//There are two parameters:
 	public LinkedList<QS> sendTo;    //Anger till vilken process de genererade kunderna ska skickas //Where to send customers
@@ -22,6 +25,14 @@ class Gen extends Proc{
 				SignalList.SendSignal(ARRIVAL, randomSendTo(sendTo), time);
 				SignalList.SendSignal(READY, this, time + (2.0/lambda)*slump.nextDouble());}
 				break;
+			case MEASURE:{
+				noMeasurements++;
+				for(int i = 0; i < 5; i++){
+					int tmp = accumulatedInQueues.get(i);
+					 accumulatedInQueues.set(i, tmp + sendTo.get(i).numberInQueue);
+				}
+				SignalList.SendSignal(MEASURE, this, time + 2*slump.nextDouble());
+			} break;
 		}
 	}
 	public QS randomSendTo(LinkedList<QS> queues){

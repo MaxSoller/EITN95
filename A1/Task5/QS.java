@@ -32,11 +32,6 @@ class QS extends Proc{
 				}
 			} break;
 
-			case MEASURE:{
-				noMeasurements++;
-				accumulated = accumulated + numberInQueue;
-				SignalList.SendSignal(MEASURE, this, time + 2*slump.nextDouble());
-			} break;
 		}
 	}
 }
