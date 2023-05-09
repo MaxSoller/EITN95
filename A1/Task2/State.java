@@ -48,15 +48,17 @@ class State extends GlobalSimulation {
 	}
 
 	private void a_arrival() {
-		if (nbrA + nbrB == 0)
+		if (nbrA + nbrB == 0) {
 			insertEvent(A_DEPART, time + xa);
+		}
 		nbrA++;
 		insertEvent(A_ARRIVAL, time + expDistribution(1.0/lambda));
 	}
 
 	private void b_arrival() {
-		if (nbrA + nbrB == 0)
+		if (nbrA + nbrB == 0) {
 			insertEvent(B_DEPART, time + xb);
+		}
 		nbrB++;
 	}
 
