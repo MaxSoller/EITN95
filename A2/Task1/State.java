@@ -62,6 +62,7 @@ class State extends GlobalSimulation{
 	}
 
 	private double poissonDist(double mean) {
-		return -Math.log(1 - slump.nextDouble())/mean;
+		double u = slump.nextDouble();
+		return -Math.log(1 - u) / mean;
 	}
 }

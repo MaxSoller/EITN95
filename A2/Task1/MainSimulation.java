@@ -5,9 +5,9 @@ import java.io.*;
 public class MainSimulation extends GlobalSimulation{
  
     public static void main(String[] args) throws IOException {
-		int N = 100, x = 10, T = 4, M = 4000;
+		int N = 100, x = 10, T = 1, M = 4000;
 		double lambda = 4.0;
-		String fileName = "data/task1_6.txt";
+		String fileName = "data/task1_5.txt";
         
     	Event actEvent;
     	State actState = new State(N, x, lambda, T, fileName); // The state that shoud be used
@@ -16,7 +16,7 @@ public class MainSimulation extends GlobalSimulation{
         insertEvent(MEASURE, T);
 
         // The main simulation loop
-    	while (time < M){
+    	while (actState.noMeasurements  < M){
     		actEvent = eventList.fetchEvent();
     		time = actEvent.eventTime;
     		actState.treatEvent(actEvent);

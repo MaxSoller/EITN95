@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 
 def confidenceInterval(customers, filename):
     N = len(customers)
     mean = np.mean(customers)
-    var = np.sum((customers - mean)**2) / N
+    var = np.sum(pow((customers - mean), 2)) / N
     std = np.sqrt(var)
     confidence_interval = 1.96 * (std / np.sqrt(N))
 
@@ -12,7 +13,7 @@ def confidenceInterval(customers, filename):
     print("Confidence interval for ", filename, ": ", confidence_interval)
 
 
-filename = "data/task1_6"
+filename = "data/task1_5"
 
 file = open(filename + ".txt", "r")
 
