@@ -5,20 +5,43 @@ import java.io.*;
 public class MainSimulation extends GlobalSimulation{
  
     public static void main(String[] args) throws IOException {
-    	Event actEvent;
-    	State actState = new State(); // The state that shoud be used
+		Random slump = new Random();
+ // The state that shoud be used
     	// Some events must be put in the event list at the beginning
-        insertEvent(ARRIVAL, 0);  
-        insertEvent(MEASURE, 5);
-        
+		Event actEvent;
+		State actState;
+		double boatPrice = 2000000.0;
+        int amountOfSimulations = 0;
+		double confidence = Integer.MAX_VALUE;
+		LinkedList<Double> results = new LinkedList<>();
         // The main simulation loop
-    	while (time < 5000){
-    		actEvent = eventList.fetchEvent();
-    		time = actEvent.eventTime;
-    		actState.treatEvent(actEvent);
-    	}
-    	
-    	// Printing the result of the simulation, in this case a mean value
-    	System.out.println(1.0*actState.accumulated/actState.noMeasurements);
+		while(confidence > 2){
+			actState = new State();
+			insertEvent(MONTH, 0);  
+			insertEvent(CRASH, slump.nextDouble(12*4*2));
+
+			while (actState.money < boatPrice){
+				actEvent = eventList.fetchEvent();
+				time = actEvent.eventTime;
+				actState.treatEvent(actEvent);
+			}
+
+			amountOfSimulations++;
+			results.addLast(time);
+			confidence = averageDouble(results)/Math.sqrt(amountOfSimulations);
+			time = 0;
+			}
+		System.out.println("Done");
+		System.out.println("Average months to reach boat: " + averageDouble(results) + " \u00B1 " + confidence);
+		
+
+		
     }
+	public static Double averageDouble(List<Double> values){
+		double sum = 0;
+		for(double i : values){
+			sum = sum + i;
+		}
+		return sum/values.size();
+	}
 }
