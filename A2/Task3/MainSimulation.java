@@ -14,6 +14,7 @@ public class MainSimulation extends GlobalSimulation{
         int amountOfSimulations = 0;
 		double confidence = Integer.MAX_VALUE;
 		LinkedList<Double> results = new LinkedList<>();
+		LinkedList<Double> averages = new LinkedList<>();
         // The main simulation loop
 		while(confidence > 2){
 			actState = new State();
@@ -33,7 +34,12 @@ public class MainSimulation extends GlobalSimulation{
 			}
 		System.out.println("Done");
 		System.out.println("Average months to reach boat: " + averageDouble(results) + " \u00B1 " + confidence);
-		
+		System.out.println("Amount of months ");
+		System.out.println(amountOfSimulations);
+		for(double i : results){
+			
+			//System.out.println(i);
+		}
 
 		
     }
