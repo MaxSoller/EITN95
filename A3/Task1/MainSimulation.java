@@ -7,6 +7,10 @@ import java.io.*;
 
 public class MainSimulation extends Global{
 
+
+	public static void run() {
+		
+	}
     public static void main(String[] args) throws IOException {
 
 		//Signallistan startas och actSignal deklareras. actSignal �r den senast utplockade signalen i huvudloopen nedan.
@@ -19,7 +23,7 @@ public class MainSimulation extends Global{
 		Properties conf = new Properties();
 
 		try {
-			String path = "configs/1000.conf";
+			String path = "configs/2000.conf";
 			FileInputStream file = new FileInputStream(path);
 			conf.load(file);
 			file.close();
@@ -30,48 +34,43 @@ public class MainSimulation extends Global{
 		int n = Integer.parseInt(conf.getProperty("n"));
 		Double T_p = Double.parseDouble(conf.getProperty("T_p"));
 		Double t_s = Double.parseDouble(conf.getProperty("t_s"));
-		Double r = Double.parseDouble(conf.getProperty("r"));
+		Double r = Double.parseDouble(conf.getProperty("r")) * 1000;
+		r = 11000.0;
+		
+		//Used for uniform sleep in Strat2
+		double lb = 1000, ub = 10000;
 
+		Gateway gateway = new Gateway();
 		Sensor[] sensors = new Sensor[n];
 		for (int i = 0; i < n; i++) {
 			String[] point = conf.getProperty("point_" + Integer.toString(i)).split(" ");
-			Sensor sensor = new Sensor(Double.parseDouble(point[0]), Double.parseDouble(point[0]), T_p, t_s, r);
-			SignalList.SendSignal(ARRIVAL, sensor, time + sensor.expDistribution());
+			Sensor sensor = new Sensor(Double.parseDouble(point[0]), Double.parseDouble(point[0]), r, t_s, T_p, gateway, lb, ub);
+			SignalList.SendSignal(SENSE_CHANNEL, null, sensor, time + sensor.expDistribution());
 			sensors[i] = sensor;
 		}
 
-		SignalList.SendSignal(MEASURE, Q1, time);
+		SignalList.SendSignal(MEASURE, null, gateway, time+10);
 
-    	//H�r nedan skapas de processinstanser som beh�vs och parametrar i dem ges v�rden.
-    	// Here process instances are created (two queues and one generator) and their parameters are given values. 
+		System.out.println("lb = " + lb + ", ub = " + ub);
+		System.out.println("n = " + n + ", T_p = " +  T_p + ", t_s = " + t_s + ", Radius = " + r + "\n");
 
-    	QS Q1 = new QS();
-    	Q1.sendTo = null;
-
-    	Gen Generator = new Gen();
-    	Generator.lambda = 9; //Generator ska generera nio kunder per sekund  //Generator shall generate 9 customers per second
-    	Generator.sendTo = Q1; //De genererade kunderna ska skickas till k�systemet QS  // The generated customers shall be sent to Q1
-
-    	//H�r nedan skickas de f�rsta signalerna f�r att simuleringen ska komma ig�ng.
-    	//To start the simulation the first signals are put in the signal list
-
-    	SignalList.SendSignal(READY, Generator, time);
-
-
-
-    	// Detta �r simuleringsloopen:
-    	// This is the main loop
-
-    	while (time < 100000){
+    	while (time < 10000){
     		actSignal = SignalList.FetchSignal();
     		time = actSignal.arrivalTime;
     		actSignal.destination.TreatSignal(actSignal);
     	}
-
-    	//Slutligen skrivs resultatet av simuleringen ut nedan:
-    	//Finally the result of the simulation is printed below:
-
-    	System.out.println("Mean number of customers in queuing system: " + 1.0*Q1.accumulated/Q1.noMeasurements);
-
-    }
+		String througput = String.format("%.4f", gateway.succSignals/time);
+    	System.out.println("Througput: " + througput);
+		double lambda = (gateway.totSignals/time);
+		double T_put = 1 * lambda * Math.exp(-2*lambda);
+		double packetLoss = 1 - (gateway.succSignals / gateway.totSignals);
+		System.out.println("T_put = " + String.format("%.4f", T_put));
+		System.out.println("Packet loss: " + String.format("%.4f", packetLoss));
+		System.out.println("Confidence interval: " + gateway.confInterval);
+		System.out.println(time + " " + gateway.succSignals + " " + gateway.totSignals);
+    
+		SimpleFileWriter fw = new SimpleFileWriter("vary_r", true);
+		fw.println(througput + " " + packetLoss +  " " + gateway.confInterval);
+		fw.close();
+	}	
 }

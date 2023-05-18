@@ -9,4 +9,5 @@ class Signal{
 	public double arrivalTime;
 	public int signalType;
 	public Signal next;
+	public Proc sender;
 }
