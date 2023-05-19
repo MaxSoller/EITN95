@@ -22,7 +22,7 @@ public class MainSimulation extends Global {
 		double speed = 2.0;
 
 		LinkedList<Double> endTimes = new LinkedList<Double>();
-		Map<Double, Integer> freqMap = new HashMap<Double, Integer>();
+		Map<Double, Integer> freq = new HashMap<Double, Integer>();
 
 		// H�r nedan skapas de processinstanser som beh�vs och parametrar i dem ges
 		// v�rden.
@@ -74,16 +74,16 @@ public class MainSimulation extends Global {
 			System.out.println(endTimes.size());
 			for (Student s : all_students) {
 				for (double t : s.talkedTo) {
-					if (!freqMap.containsKey(t)) {
-						freqMap.put(t, 1);
+					if (!freq.containsKey(t)) {
+						freq.put(t, 1);
 					} else {
-						freqMap.put(t, freqMap.get(t) + 1);
+						freq.put(t, freq.get(t) + 1);
 					}
 				}
 			}
 
 		}
-		for(Map.Entry<Double, Integer> val: freqMap.entrySet()){
+		for(Map.Entry<Double, Integer> val: freq.entrySet()){
 			writer2.write(val.getKey()/60 + " : " + val.getValue() + "\n");
 		}
 		writer.close();
