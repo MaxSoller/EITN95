@@ -1,39 +1,38 @@
-import java.util.LinkedList;
 import java.util.Random;
 
-class Student{
-    private double speed, delay;
+class Student {
+    public double speed, talkingTime;
     double[] talkedTo;
     int direction, stepsLeft, uid;
-    private int[] pos; 
+    private int[] pos;
     Random slump = new Random();
-    public static final int N = 4, W = 5, E = 6, S = 7, NW = 8, NE = 9, SE = 10, SW = 11; 
+    public static final int N = 4, W = 5, E = 6, S = 7, NW = 8, NE = 9, SE = 10, SW = 11;
     public boolean talking;
     public boolean stopTalking;
 
-    
-    Student(double delay, double speed, int uid){
-        this.delay = delay;
-        this.speed = speed; 
+
+    Student(double talkingTime, double speed, int uid) {
+        this.talkingTime = talkingTime;
+        this.speed = speed;
         this.uid = uid;
         pos = new int[2];
         direction = newDirection();
-        stepsLeft = stepToTake();
+        stepsLeft = nextAmountOfSteps();
         talking = false;
         talkedTo = new double[20];
         stopTalking = false;
     }
 
-    public void setPos(int x, int y){
+    public void setPos(int x, int y) {
         pos[0] = x;
-        pos[1] = y; 
+        pos[1] = y;
     }
 
-    public int[] getPos(){
-        return pos; 
+    public int[] getPos() {
+        return pos;
     }
-    public int[] startPos(){
 
+    public int[] startPos() {
 
         int startX = slump.nextInt(20);
         int startY = slump.nextInt(20);
@@ -41,41 +40,38 @@ class Student{
         pos[1] = startY;
 
         return pos;
-        
-    }
-    public int newDirection(){
-
-      return slump.nextInt(4, 11);
 
     }
 
-    public void changeDirection(){
+    public int newDirection() {
+
+        return slump.nextInt(4, 11);
+
+    }
+
+    public void changeDirection() {
         direction = newDirection();
     }
 
-    public boolean checkBounds(int nextX, int nextY){
-        if(nextX + pos[0] < 20 && nextY + pos[1] < 20){
+    public boolean checkBounds(int nextX, int nextY) {
+        if (nextX + pos[0] < 20 && nextY + pos[1] < 20) {
             return true;
         }
-        return false; 
+        return false;
     }
 
-    public double timeToMove(int[] oldPos, int[] newPos, double speed){
-        LinkedList<Integer> tmp = new LinkedList<>();
-        tmp.add(4);
-        tmp.add(5);
-        tmp.add(6);
-        tmp.add(7);
-        if(tmp.contains(direction)){
-            return ((newPos[0] - oldPos[0]) + (newPos[1]-oldPos[0]))/speed;
+    public double timeToMove() {
+        if (direction == N || direction == W || direction == E ||direction == S) {
+            return (1.0 / 2.0) / speed;
+
+        } else {
+
+            return Math.sqrt(1.0 / 2.0) / speed;
         }
-        return Math.sqrt(Math.pow((newPos[0] - oldPos[0]),2) + Math.pow((newPos[1]-oldPos[0]),2))/speed;
-
-        
     }
 
-    public void move(){
-        switch (direction){
+    public void move() {
+        switch (direction) {
             case N:
                 pos[1]++;
                 break;
@@ -107,75 +103,64 @@ class Student{
             default:
                 System.out.println("Invalid move");
         }
-        //System.out.println("UID " + uid + " with position " + pos[0] + "," + pos[1]);
         stepsLeft--;
     }
 
-    public boolean validMove(){
-        boolean tmp = false; 
-        if(direction == N || direction == NW || direction == NE){
-            if(pos[1] == 19){
-                tmp = true;
+    public boolean validMove() {
+        boolean tmp = true;
+        if (direction == N || direction == NW || direction == NE) {
+            if (pos[1] == 19) {
+                tmp = false;
             }
         }
-        if(direction == W || direction == NW ||direction == SW){
-            if(pos[0] == 0){
-                tmp = true; 
+        if (direction == W || direction == NW || direction == SW) {
+            if (pos[0] == 0) {
+                tmp = false;
             }
         }
-        if(direction == S || direction == SW ||direction == SE){
-            if(pos[1] == 0){
-                tmp = true; 
+        if (direction == S || direction == SW || direction == SE) {
+            if (pos[1] == 0) {
+                tmp = false;
             }
         }
-        if(direction == E ||direction == SE || direction == NE){
-            if(pos[0] == 19){
-                tmp = true;
+        if (direction == E || direction == SE || direction == NE) {
+            if (pos[0] == 19) {
+                tmp = false;
             }
         }
-        return !tmp;
+        return tmp;
     }
 
-    public int stepToTake(){
-        return slump.nextInt(1,11);
+    public int nextAmountOfSteps() {
+        return slump.nextInt(1, 11);
     }
 
-    public void metStudent(int uid, double time){
+    public void metStudent(int uid, double time) {
         talkedTo[uid] += time;
     }
 
-    public boolean metAll(){
-        for(int i = 0; i < 20; i++){
-            if(talkedTo[i] == 0.0 && i != uid ){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public int metAllCounter(){
+    public int uniqueMeetingsCounter() {
         int counter = 0;
-        for(int i = 0; i < 20; i++){
-            //System.out.println(getAllMettingTimes());
-            //System.out.println("uid: " + uid + "id: " + i);
-            if(talkedTo[i] != 0.0 && i != uid ){
+        for (int i = 0; i < 20; i++) {
+            if (talkedTo[i] != 0.0 && i != uid) {
                 counter++;
             }
         }
         return counter;
     }
 
-    public String toString(){
-        return "UID: " + uid + " ,X: " + pos[0] + ", Y: " + pos[1] + ", Direction: " + direction + ", StepsLeft: " + stepsLeft + ", Talking: " + talking;
+    public String toString() {
+        return "UID: " + uid + " ,X: " + pos[0] + ", Y: " + pos[1] + ", Direction: " + direction + ", StepsLeft: "
+                + stepsLeft + ", Talking: " + talking;
     }
-    public String getAllMettingTimes(){
+
+    public String getAllMettingTimes() {
         StringBuilder sb = new StringBuilder();
         sb.append(uid + " met \n\t");
-        for(int i = 0; i < 20; i++){
-            sb.append("number " + i + " for amount of time " + talkedTo[i] + "\n"); 
+        for (int i = 0; i < 20; i++) {
+            sb.append("number " + i + " for amount of time " + talkedTo[i] + "\n");
         }
         return sb.toString();
     }
-    
 
 }
